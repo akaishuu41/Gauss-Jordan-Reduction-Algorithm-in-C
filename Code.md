@@ -1,88 +1,131 @@
 # Project Title
 
-One Paragraph of project description goes here
+Implementation Of Gaus Jordan Reduction in C
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them
+This program is useful for someone who needs to solve many linear equations.
 
 ```
 Give examples
 ```
 
-### Installing
+### Table of Content
 
-A step by step series of examples that tell you how to get a development env running
+1.Read the file
+2.Display the matrix
+3.Gauss Jordan Reduction
 
-Say what the step will be
-
+### Read the text file code
 ```
-Give the example
+//read a data file fuction
+void read_int(const char* file_name, int x,int y)//x:size; y:column
+{
+   FILE *myFile;
+    myFile = fopen(file_name, "r");
+
+    //read file into array
+    int data[100]={0.0};
+    int i,j;
+
+    if (myFile == NULL){
+        printf("Error Reading File\n");
+        exit (0);
+    }
+
+    for (i = 0; i < x*y; i++){
+        fscanf(myFile, "%d,", &data[i] );
+    }
+
+    fclose(myFile);
+
+    for( i=0; i<x; i++)
+    {
+        for( j=0; j<y; j++)
+        {
+            eq[i][j] = data[j+i*y];
+        }
+    }
+
+}
 ```
 
-And repeat
-
+### Display matrix Code
 ```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+void print_matx(int x,int y)//x:size; y:column.
+{
+    int i,j;
+    for( i=0; i<x; i++)
+   		{
+       		for( j=0; j<y; j++)
+      		{
+         		printf(" %3.3f  ", eq[i][j]);
+        	}
+       		 printf("\n\n");
+   		}
+}
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+### Gauss Jordan Reduction Code
 ```
-Give an example
+//reduction fuction
+int column_red(int x, int y, int z) // x=i(present column), y=column(number of columns), z=size(number of equations)
+{
+    float n;
+    int i,j;
+    n = eq[0][x];
+    if(n==0)
+    {
+        return 1;
+    }
+    for( i=0; i<y; i++)
+    {
+        eq[0][i] = eq[0][i]/n;
+    }
+
+    for( i=0; i<z; i++)
+    {
+        n = eq[1+i][x];
+        for( j=0; j<y; j++)
+        {
+            eq[1+i][j] = eq[1+i][j] - n*eq[0][j];
+        }
+    }
+}
+
+
+   		//gauss jordan operation
+   		for( i=0; i<size; i++)
+   		{
+    		if(i==0)
+   		    {
+            column_red(i, column, size);
+       		}
+       		for( j=0; j<i; j++)
+        	{
+            	for( k=0; k<column; k++)
+            	{
+               		temp = eq[j][k];
+              	 	eq[j][k] = eq[i][k];
+              	 	eq[i][k] = temp;
+            	}
+            	if(j==0)
+               		{
+                   		column_red(i, column, size);
+               		}
+        	}
+    	}
+    	for( i=0; i<size; i++)
+    	{
+        	for( j=0; j<i; j++)
+        	{
+           		for( k=0; k<column; k++)
+           		{
+                	temp = eq[j][k];
+                	eq[j][k] = eq[i][k];
+                	eq[i][k] = temp;
+            	}
+        	}
+   		}
 ```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
 
